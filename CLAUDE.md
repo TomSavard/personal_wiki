@@ -15,17 +15,23 @@ The wiki is a compounding artifact. Its value comes from consistency and durabil
 
 ## Directory structure
 
+The engine lives in `personal_wiki/` (this repo). It operates on the Obsidian vault at:
+
 ```
-personal_wiki/
-  raw/            # immutable source documents — never modified
-    assets/       # images and attachments
+~/Library/CloudStorage/GoogleDrive-Tom.savard@orange.fr/Mon Drive/obsidian_vault/obsidian_vault/
+  raw/            # immutable source documents — never modified by LLM
   wiki/           # LLM-maintained knowledge pages
-  index.md        # catalog of all wiki pages
-  CLAUDE.md       # this file
+    index.md      # catalog of all wiki pages
+  .obsidian/      # Obsidian config — never touch
+```
+
+`personal_wiki/` holds:
+```
+  CLAUDE.md       # this file — the bookkeeper's contract
   llm_wiki.md     # backbone idea reference
 ```
 
-**Rule:** The LLM writes only to `wiki/` and `index.md`. Everything in `raw/` is read-only.
+**Rule:** The LLM writes only to `vault/wiki/`. Everything in `vault/raw/` is read-only. Never touch `.obsidian/` or `.trash/`.
 
 ---
 
