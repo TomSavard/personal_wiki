@@ -20,6 +20,7 @@ The engine lives in `personal_wiki/` (this repo). It operates on the Obsidian va
 ```
 ~/Library/CloudStorage/GoogleDrive-Tom.savard@orange.fr/Mon Drive/obsidian_vault/obsidian_vault/
   raw/            # INBOX — drafts written by Tom, waiting to be ingested. Deleted after successful ingest.
+    papers/       # permanent archive of external paper references (kept after ingest)
   wiki/           # LLM-maintained clean knowledge pages (one idea per note, linked)
     index.md          # catalog of all wiki pages
     vault-principles.md
