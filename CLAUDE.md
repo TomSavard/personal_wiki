@@ -43,7 +43,7 @@ Every wiki page starts with this frontmatter:
 ---
 title: <page title>
 type: concept | entity | source-summary | synthesis
-tags: []
+status: stub | draft | complete
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 sources: []
@@ -52,9 +52,10 @@ language: en | fr
 ```
 
 - `type` must be one of the four defined values — no new types without user approval
-- `tags` should reuse existing tags; propose new ones explicitly before using them
+- `status`: `stub` = bare minimum, `draft` = usable but incomplete, `complete` = fully developed
 - `sources` lists filenames from `raw/` that this page draws from
 - `language` reflects the primary language of the page content
+- **Links over tags for connections:** use `[[page-name]]` for all conceptual relationships — they appear in the graph view. Tags are for meta/status only, never for topical connections.
 
 After the frontmatter, pages follow this structure:
 
@@ -127,8 +128,9 @@ Report findings as a list. Propose fixes. Do not apply them until the user appro
 
 These protect the wiki from quality decay over time:
 
-1. **Never rewrite a page from scratch** unless the user explicitly asks. Prefer surgical updates.
-2. **Never remove cross-references** without replacing them or flagging the removal.
-3. **Flag contradictions, don't resolve them silently.** Surface the conflict; let the user decide.
-4. **Preserve the user's own writing verbatim** unless asked to edit it.
-5. **When uncertain about where something belongs**, ask rather than guess.
+1. **Fidelity over volume.** Every claim in a wiki page must trace to a source listed in `sources:`. Never enrich with general LLM knowledge, never extrapolate relationships, never add sections that feel "complete" but aren't grounded in the source. A 3-line page with perfect provenance beats a 20-line page with some invented content. If context would genuinely help, propose it to the user and wait for approval.
+2. **Never rewrite a page from scratch** unless the user explicitly asks. Prefer surgical updates.
+3. **Never remove cross-references** without replacing them or flagging the removal.
+4. **Flag contradictions, don't resolve them silently.** Surface the conflict; let the user decide.
+5. **Preserve the user's own writing verbatim** unless asked to edit it.
+6. **When uncertain about where something belongs**, ask rather than guess.
