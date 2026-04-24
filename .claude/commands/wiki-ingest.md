@@ -1,8 +1,8 @@
 # /wiki-ingest
 
-Process a source from `raw/` into the wiki. Creates a source-summary page, updates relevant concept and entity pages, and updates the index. The user reviews and approves before anything is considered done.
+Clean and integrate a **user-written draft** into the wiki. The bookkeeper does not generate knowledge — the user has already done the learning work. The bookkeeper's job is to structure, link to existing pages, and propose (never add) potential enrichments.
 
-**Argument:** filename or path relative to `raw/` (e.g. `wiki-ingest Transformer.md` or `wiki-ingest tech/LoRA.md`)
+**Argument:** path to the draft note (user's own words) OR the draft text inline.
 
 ---
 
@@ -16,89 +16,101 @@ Process a source from `raw/` into the wiki. Creates a source-summary page, updat
 
 ---
 
-## Step 1 — Resolve source file
+## Philosophy (read before acting)
 
-- If argument is provided, resolve it relative to `{vault}/raw/`
-- If the file does not exist, stop and output: `✗ File not found: {resolved path}`
-- Read the file
-
----
-
-## Step 2 — Discuss with user before writing
-
-Read the source. Then present to the user:
-- **3–5 key takeaways** from the source in bullet form
-- **Proposed wiki pages to create or update** (source-summary + any concept/entity pages)
-- **Proposed tags** (check existing tags in wiki pages before proposing new ones)
-
-Ask: *"Does this look right? Any emphasis to change before I write?"*
-
-Do not proceed to Step 3 until the user confirms.
+1. The user's draft is the authoritative content. Do not rewrite its claims.
+2. Do not add ideas from general knowledge.
+3. Structure, templating, and links to existing pages are in scope.
+4. Any enrichment (implicit idea, missing link, related entity) must be proposed as a discrete suggestion awaiting the user's yes/no.
 
 ---
 
-## Step 3 — Write wiki pages
+## Step 1 — Read the draft
 
-Apply the page format from `CLAUDE.md`:
+Read the draft note provided by the user. Do not read the original raw source unless the user explicitly asks — the draft is Tom's synthesis and the source of truth for this ingest.
+
+---
+
+## Step 2 — Identify target wiki page(s)
+
+- Is the draft about one concept/entity → one wiki page
+- Does it cover multiple distinct ideas → propose splitting, ask the user
+
+Check `{vault}/wiki/index.md`: does a page already exist? If yes, we update; if no, we create.
+
+---
+
+## Step 3 — Apply the template
+
+Wrap the draft with frontmatter from `CLAUDE.md`:
 
 ```yaml
 ---
 title: <title>
 type: concept | entity | source-summary | synthesis
-tags: []
+status: stub | draft | complete
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-sources: [<raw filename>]
+sources:
+  - <path to raw source, if any>
 language: en | fr
 ---
 ```
 
-Follow the vault principles from `{vault}/wiki/vault-principles.md`:
-- One idea per page
-- Write in your own words — no copy-paste from the source
-- Titles as full phrases readable in 2 years without context
-- Link to related wiki pages with `[[page-name]]`
-- End every page with a `## See also` section
-
-Pages to write/update:
-1. **Source-summary page** — `{vault}/wiki/{slug}.md` — summary of the source, key claims, your synthesis
-2. **Concept/entity pages** — one per major concept or entity introduced; update if page already exists (surgical edits only, flag contradictions with `> ⚠️ Contradiction with [[other-page]]:`)
+Normalize the filename (kebab-case, lowercase, no accents).
 
 ---
 
-## Step 4 — Update index
+## Step 4 — Wrap explicit matches with links
 
-Add new pages to the appropriate section in `{vault}/wiki/index.md`:
-- One line per page: `- [[page-name]] — one-sentence description`
-- Update `_Total pages_` count
-- Update `_Last updated_` date
+Scan the draft for words/phrases that match existing wiki page titles. Wrap them in `[[...]]`.
+
+This is mechanical — only exact or near-exact matches. No interpretation.
 
 ---
 
-## Step 5 — Show diff summary and wait for approval
+## Step 5 — Propose enrichments as a numbered list
 
-Output a list of every file created or modified:
+Present suggestions for the user to validate. Each item:
+- Numbered
+- One sentence explaining the suggestion
+- Explicit Y/N expected
+
+Examples:
+
+```
+1. The draft mentions "Cézanne" — link to existing [[paul-cezanne]]? (Y/N)
+2. The draft talks about "impression of light" — this echoes [[impressionnisme]]'s stated focus. Add cross-link? (Y/N)
+3. "Louise" is mentioned as having visited an exhibition — create an entity page [[louise]]? (Y/N)
+4. The draft describes a painting style similar to [[art-abstrait]]. Add `See also` link? (Y/N)
+```
+
+**Wait for the user's responses.** Apply only what they approve.
+
+---
+
+## Step 6 — Update the index
+
+Add or update the relevant lines in `{vault}/wiki/index.md`. Update the `_Last updated_` and `_Total pages_` metadata.
+
+---
+
+## Step 7 — Show diff summary
+
 ```
 Created:
-  wiki/transformer.md
-  wiki/attention-mechanism.md
+  wiki/<new page>.md
 Modified:
   wiki/index.md
+  wiki/<existing page>.md
 ```
 
-Then ask: *"Ready to commit? Any changes before we do?"*
-
-Do not commit until the user explicitly says yes.
+Ask: *"Ready to commit? Any last changes?"*
 
 ---
 
-## Step 6 — Commit
+## Step 8 — Commit
 
-Commit message format: `ingest: <source title>`
+Only after explicit user approval. Commit message: `ingest: <page title>`.
 
-Use conventional commit via the `doctolib-base:commit` skill if available, otherwise:
-```
-git -C {vault} add wiki/ && git -C {vault} commit -m "ingest: <title>"
-```
-
-Note: the vault is not a git repo by default — skip the commit step and note it if git is not initialized.
+Note: vault is not a git repo by default — if so, skip the commit and inform the user.

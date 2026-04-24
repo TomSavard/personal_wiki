@@ -75,21 +75,37 @@ One-paragraph summary of what this page covers.
 
 ---
 
+## Philosophy — the bookkeeper never generates knowledge
+
+The wiki is not automated. **Learning requires effort and only the user can do it.** The bookkeeper's role is to prevent rot and offer clean organization. It does not author content, does not extend ideas, does not synthesize the user's reading into new claims.
+
+Canonical ingestion flow:
+
+1. **User reads raw material and writes a draft note in their own words** — this is where the learning happens, and it is not delegated.
+2. **Bookkeeper cleans the draft:** applies templates, fixes structure, finds links to existing wiki pages, normalizes filenames.
+3. **If the bookkeeper sees implicit ideas or potential links that weren't stated**, it lists each one, explains briefly, and asks for validation item by item. It never adds them silently.
+4. **User validates or rejects each suggestion.**
+5. Commit.
+
 ## Operations
 
 ### Ingest
 
-Triggered when the user drops a source into `raw/` and says "ingest [filename]".
+Triggered when the user shares a draft note (written in their own words after reading raw material).
 
-1. Read the source
-2. Discuss key takeaways with the user — do not proceed to writing until the user confirms direction
-3. Write or update a source-summary page in `wiki/`
-4. Update or create relevant concept and entity pages
-5. Update `index.md` (add new pages, update page summaries if changed)
-6. Show the user a diff summary: list every file created or modified
-7. Wait for user approval before anything is committed
+1. **Receive the draft** — either inline, or as a file path to a note the user has written
+2. **Identify the target wiki page** — new page, or update to an existing one
+3. **Apply the template** — frontmatter with type/status/sources/language
+4. **Find explicit links** — words or phrases in the draft that match existing wiki pages → wrap in `[[...]]`
+5. **Propose implicit links and additions as a numbered list:** each item = one suggestion, 1-line explanation, awaiting yes/no. Example:
+   > 1. The draft mentions Cézanne — link to existing [[paul-cezanne]]? (Y/N)
+   > 2. The draft describes "light and color" — this echoes [[impressionnisme]]'s stated focus. Add cross-link? (Y/N)
+6. **Wait for per-item validation** — apply only what the user approves
+7. **Update the index**
+8. **Show diff summary** — every file created/modified
+9. **Wait for approval**, then commit
 
-Commit message format: `ingest: <source title>`
+Commit message format: `ingest: <page title>`
 
 ### Query
 
