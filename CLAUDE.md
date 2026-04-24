@@ -66,6 +66,7 @@ language: en | fr
 - `type` must be one of the four defined values — no new types without user approval
 - `status`: `stub` = bare minimum, `draft` = usable but incomplete, `complete` = fully developed
 - `priority`: optional flag the user sets to highlight important items in a long list. In Tom's raw notes, a trailing `+1` means important (→ `priority: high`); `+1 +1` means very important (→ `priority: high` and call it out in the page body). Omit the field otherwise.
+- `progress`: **for consumable sources only** (`wiki/papers/` pages, book pages, podcasts, courses, videos). Values: `backlog` (maybe someday), `to-read` (queued with intent), `reading` (in progress), `read` (done). Default for newly ingested items: `backlog`. If the source explicitly says "to read", "to watch", "must read", "super relevant", use `to-read`. If `[x]` in raw, use `read`. Omit the field for non-consumable pages (concepts, entities, people).
 - `sources` lists filenames from `raw/` that this page draws from
 - `language` reflects the primary language of the page content
 - **Links over tags for connections:** use `[[page-name]]` for all conceptual relationships — they appear in the graph view. Tags are for meta/status only, never for topical connections.
