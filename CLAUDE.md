@@ -21,7 +21,13 @@ The engine lives in `personal_wiki/` (this repo). It operates on the Obsidian va
 ~/Library/CloudStorage/GoogleDrive-Tom.savard@orange.fr/Mon Drive/obsidian_vault/obsidian_vault/
   raw/            # INBOX — drafts written by Tom, waiting to be ingested. Deleted after successful ingest.
   wiki/           # LLM-maintained clean knowledge pages (one idea per note, linked)
-    index.md      # catalog of all wiki pages
+    index.md          # catalog of all wiki pages
+    vault-principles.md
+    art/              # mouvements + peintres + œuvres
+    livres/           # livres + hub `livre` + listes de lecture
+    ecrivains/        # écrivains + hub `ecrivain`
+    personnes/        # personnes du cercle de Tom
+    medias/           # podcasts, chaînes, sources de recommandations
   .obsidian/      # Obsidian config — never touch
 ```
 
@@ -78,14 +84,21 @@ One-paragraph summary of what this page covers.
 
 **Rule:** Never delete content from a page without surfacing the deletion to the user first. Flag contradictions with `> ⚠️ Contradiction with [[other-page]]:` rather than silently overwriting.
 
-## Hub pages (category visibility in graph view)
+## Folders and hubs
 
-Some categories have a dedicated hub page. Every entity of that category links to its hub so the graph view shows clear clusters. Existing hubs:
+**Folders** organize the wiki by domain — they make browsing obvious. Max 1 level of nesting (`wiki/art/claude-monet.md`, not `wiki/art/peinture/impressionnistes/claude-monet.md`). Current domain folders:
 
-- `[[livre]]` — every book page links here
-- `[[ecrivain]]` — every writer page links here
+- `art/` — mouvements, peintres, œuvres
+- `livres/` — livres et listes de lecture
+- `ecrivains/` — écrivains
+- `personnes/` — cercle personnel
+- `medias/` — podcasts, chaînes, sources de recommandations
 
-When introducing a new category with 3+ entities, propose a hub page to the user. Hubs are `type: concept`, `status: draft`, and their purpose is structural (navigation + graph legibility), not content.
+Create a new folder only when you have 3+ pages of a new domain. Propose it to the user before creating.
+
+**Hubs** are category concept pages (`[[livre]]`, `[[ecrivain]]`) that every entity of a category links to. They make the category a visible cluster in the graph view. Hubs are structural — `type: concept`, `status: draft`. When a new domain folder appears, propose a hub alongside it.
+
+**Links vs folders:** Obsidian `[[links]]` resolve by filename regardless of folder, so moving a file between folders never breaks a link. Folders are for humans browsing; links are for the knowledge network.
 
 ---
 
