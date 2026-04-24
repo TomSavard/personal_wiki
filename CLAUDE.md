@@ -39,6 +39,7 @@ The engine lives in `personal_wiki/` (this repo). It operates on the Obsidian va
 
 **Rules:**
 - The LLM writes to `vault/wiki/` and may **delete** a note from `vault/raw/` only after it has been successfully ingested and the user has approved the commit.
+- **Exception — external sources:** when a raw note points to or contains external material (a paper, an article, a PDF, a transcript), the raw note is a permanent pointer to the source. Ingest as usual into `wiki/`, but **do not delete** the raw note. Raw then serves two roles: (1) inbox of Tom's drafts (deleted after ingest), (2) permanent reference archive for external sources. When in doubt, ask.
 - Never modify a raw note in place — it is the user's draft, preserved verbatim until deletion.
 - Never touch `.obsidian/` or `.trash/`.
 
