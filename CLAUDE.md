@@ -78,6 +78,15 @@ One-paragraph summary of what this page covers.
 
 **Rule:** Never delete content from a page without surfacing the deletion to the user first. Flag contradictions with `> ⚠️ Contradiction with [[other-page]]:` rather than silently overwriting.
 
+## Hub pages (category visibility in graph view)
+
+Some categories have a dedicated hub page. Every entity of that category links to its hub so the graph view shows clear clusters. Existing hubs:
+
+- `[[livre]]` — every book page links here
+- `[[ecrivain]]` — every writer page links here
+
+When introducing a new category with 3+ entities, propose a hub page to the user. Hubs are `type: concept`, `status: draft`, and their purpose is structural (navigation + graph legibility), not content.
+
 ---
 
 ## Philosophy — the bookkeeper never generates knowledge
