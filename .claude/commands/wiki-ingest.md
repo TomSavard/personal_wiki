@@ -1,8 +1,8 @@
 # /wiki-ingest
 
-Clean and integrate a **user-written draft** into the wiki. The bookkeeper does not generate knowledge — the user has already done the learning work. The bookkeeper's job is to structure, link to existing pages, and propose (never add) potential enrichments.
+Clean and integrate a **user-written draft from `raw/`** into the wiki. The draft is Tom's own synthesis. The bookkeeper does not generate knowledge — only structures, links to existing pages, and proposes (never adds) potential enrichments. After the commit, the raw note is deleted since it's now represented in `wiki/`.
 
-**Argument:** path to the draft note (user's own words) OR the draft text inline.
+**Argument:** filename or path relative to `raw/` (e.g. `Transformer.md` or `art/peinture/Kupka.md`).
 
 ---
 
@@ -27,7 +27,9 @@ Clean and integrate a **user-written draft** into the wiki. The bookkeeper does 
 
 ## Step 1 — Read the draft
 
-Read the draft note provided by the user. Do not read the original raw source unless the user explicitly asks — the draft is Tom's synthesis and the source of truth for this ingest.
+Resolve the argument relative to `{vault}/raw/`. Read the draft. If the file does not exist, stop and output `✗ File not found: {path}`.
+
+The draft is Tom's own notes — treat it as authoritative. Do not second-guess its claims.
 
 ---
 
@@ -109,8 +111,9 @@ Ask: *"Ready to commit? Any last changes?"*
 
 ---
 
-## Step 8 — Commit
+## Step 8 — Commit and delete raw note
 
-Only after explicit user approval. Commit message: `ingest: <page title>`.
-
-Note: vault is not a git repo by default — if so, skip the commit and inform the user.
+Only after explicit user approval:
+1. Commit with message `ingest: <page title>` (vault git repo if initialized; otherwise skip and inform)
+2. Delete the source file from `{vault}/raw/` — it is now represented in `wiki/` and the raw inbox should shrink as ingestion progresses
+3. Confirm with the user: *"Ingested and deleted from raw/. Raw inbox: N remaining."*

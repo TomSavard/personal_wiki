@@ -19,8 +19,8 @@ The engine lives in `personal_wiki/` (this repo). It operates on the Obsidian va
 
 ```
 ~/Library/CloudStorage/GoogleDrive-Tom.savard@orange.fr/Mon Drive/obsidian_vault/obsidian_vault/
-  raw/            # immutable source documents — never modified by LLM
-  wiki/           # LLM-maintained knowledge pages
+  raw/            # INBOX — drafts written by Tom, waiting to be ingested. Deleted after successful ingest.
+  wiki/           # LLM-maintained clean knowledge pages (one idea per note, linked)
     index.md      # catalog of all wiki pages
   .obsidian/      # Obsidian config — never touch
 ```
@@ -31,7 +31,10 @@ The engine lives in `personal_wiki/` (this repo). It operates on the Obsidian va
   llm_wiki.md     # backbone idea reference
 ```
 
-**Rule:** The LLM writes only to `vault/wiki/`. Everything in `vault/raw/` is read-only. Never touch `.obsidian/` or `.trash/`.
+**Rules:**
+- The LLM writes to `vault/wiki/` and may **delete** a note from `vault/raw/` only after it has been successfully ingested and the user has approved the commit.
+- Never modify a raw note in place — it is the user's draft, preserved verbatim until deletion.
+- Never touch `.obsidian/` or `.trash/`.
 
 ---
 
